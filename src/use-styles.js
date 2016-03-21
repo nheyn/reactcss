@@ -34,7 +34,13 @@ module.exports = (Compoent) => {
     },
 
     render() {
-      return <Compoent {...this.props} css={this.css} />
+      //return <Compoent {...this.props} css={this.css} />
+      // Not using ^ so babel-react doesn't need to be added
+
+      return React.createElement(
+        Compoent,
+        Object.assign({}, this.props, { css: this.css })
+      )
     }
   })
 }
