@@ -6,26 +6,26 @@ let combine = require('./combine')
 
 /*
   Inline CSS function. This is the half-way point until multiple inheritance exists
+
+  @param classes: The classes to use
+  @param props: The props of the component the styles are being used by
+  @param context: The context of the component the styles are being used by
   @param declaredClasses: Object{ 'class-name': true / false }
+
   @returns object
 */
-
-module.exports = function (declaredClasses) {
+module.exports = (classes, props, context, declaredClasses) => {
   // What?
   combine = require('./combine')
 
   const arrayOfStyles = []
 
-  if (!this.classes) {
-    console.warn(`Define this.classes on \`${ this.constructor.name }\``)
-  }
-
   // Checks structure and warns if its odd
-  checkClassStructure(this.classes && this.classes())
+  checkClassStructure(classes)
 
   const activateClass = (name, options) => {
-    if (this.classes && this.classes()[name]) {
-      arrayOfStyles.push(this.classes()[name])
+    if (classes[name]) {
+      arrayOfStyles.push(classes[name])
     } else if (name && options && options.warn === true) {
       console.warn(`The \`${ name }\` css class does not exist on \`${ this.constructor.name }\``)
     }
@@ -33,8 +33,8 @@ module.exports = function (declaredClasses) {
 
   activateClass('default')
 
-  for (var prop in this.props) {
-    let value = this.props[prop]
+  for(var prop in props) {
+    let value = props[prop]
     if (!isObject(value)) {
 
       if (value === true) {
@@ -52,9 +52,9 @@ module.exports = function (declaredClasses) {
   // React Bounds
   // http://casesandberg.github.io/react-bounds/
   // Activate classes that match active bounds
-  if (this.props && this.props.activeBounds) {
-    for (var i = 0; i < this.props.activeBounds.length; i++) {
-      var boundName = this.props.activeBounds[i]
+  if (props && props.activeBounds) {
+    for (var i = 0; i < props.activeBounds.length; i++) {
+      var boundName = props.activeBounds[i]
       activateClass(boundName)
     }
   }
@@ -68,8 +68,8 @@ module.exports = function (declaredClasses) {
   }
 
   let customMixins = {}
-  if (this.context && this.context.mixins) {
-    customMixins = this.context.mixins
+  if (context && context.mixins) {
+    customMixins = context.mixins
   }
 
   return combine(arrayOfStyles, customMixins)
