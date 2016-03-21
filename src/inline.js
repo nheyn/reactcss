@@ -9,12 +9,12 @@ let combine = require('./combine')
 
   @param classes: The classes to use
   @param props: The props of the component the styles are being used by
-  @param context: The context of the component the styles are being used by
+  @param customMixins: The css mixins to use
   @param declaredClasses: Object{ 'class-name': true / false }
 
   @returns object
 */
-module.exports = (classes, props, context, declaredClasses) => {
+module.exports = (classes, props, customMixins, declaredClasses) => {
   // What?
   combine = require('./combine')
 
@@ -24,53 +24,52 @@ module.exports = (classes, props, context, declaredClasses) => {
   checkClassStructure(classes)
 
   const activateClass = (name, options) => {
-    if (classes[name]) {
+    if (classes && classes[name]) {
       arrayOfStyles.push(classes[name])
     } else if (name && options && options.warn === true) {
-      console.warn(`The \`${ name }\` css class does not exist on \`${ this.constructor.name }\``)
+      console.warn(`The \`${ name }\` css class does not exist`)
     }
   }
 
   activateClass('default')
 
-  for(var prop in props) {
-    let value = props[prop]
-    if (!isObject(value)) {
+  if(props) {
+    for(let prop in props) {
+      let value = props[prop]
+      if (!isObject(value)) {
 
-      if (value === true) {
-        activateClass(prop)
-        activateClass(`${ prop }-true`)
-      } else if (value) {
-        activateClass(`${ prop }-${ value }`)
-      } else {
-        activateClass(`${ prop }-false`)
+        if (value === true) {
+          activateClass(prop)
+          activateClass(`${ prop }-true`)
+        } else if (value) {
+          activateClass(`${ prop }-${ value }`)
+        } else {
+          activateClass(`${ prop }-false`)
+        }
+
       }
+    }
 
+    // React Bounds
+    // http://casesandberg.github.io/react-bounds/
+    // Activate classes that match active bounds
+    if (props.activeBounds) {
+      for (let i = 0; i < props.activeBounds.length; i++) {
+        const boundName = props.activeBounds[i]
+        activateClass(boundName)
+      }
     }
   }
 
-  // React Bounds
-  // http://casesandberg.github.io/react-bounds/
-  // Activate classes that match active bounds
-  if (props && props.activeBounds) {
-    for (var i = 0; i < props.activeBounds.length; i++) {
-      var boundName = props.activeBounds[i]
-      activateClass(boundName)
+  if(declaredClasses) {
+    for (let name in declaredClasses) {
+      let condition = declaredClasses[name]
+
+      if (condition === true) {
+        activateClass(name, { warn: true })
+      }
     }
   }
 
-  for (var name in declaredClasses) {
-    let condition = declaredClasses[name]
-
-    if (condition === true) {
-      activateClass(name, { warn: true })
-    }
-  }
-
-  let customMixins = {}
-  if (context && context.mixins) {
-    customMixins = context.mixins
-  }
-
-  return combine(arrayOfStyles, customMixins)
+  return combine(arrayOfStyles, customMixins? customMixins: {})
 }

@@ -22,9 +22,9 @@ module.exports = (Compoent) => {
     css(classes, declaredClasses) {
       if(!classes) {
         console.warn(`In \`${ Compoent.displayName }\`, this.props.css must be passed classes`)
-      }
+      };
 
-      return inline(classes? classes: {}, this.props, this.context, declaredClasses)
+      return inline(classes, this.props, this.context.mixins, declaredClasses)
     },
 
     render() {

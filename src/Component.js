@@ -11,7 +11,7 @@ class ReactCSSComponent extends React.Component {
     }
     const classes = typeof this.classes === 'function'? this.classes(): {}
 
-    return inline(classes, this.props, this.context, obj)
+    return inline(classes, this.props, this.context.mixins, obj)
   }
 
   styles() {
