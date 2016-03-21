@@ -4,12 +4,12 @@ const React = require('react')
 
 const inline = require('./inline')
 
-/**
- * Create a higher order Component that adds .css method (see Component.js) as a prop.
- *
- * @param Component The component to add 'css(..,)' to
- *
- * @return          The component with 'css(...)' added
+/*
+  Create a higher order Component that adds .css method (see Component.js) as a prop.
+
+  @param Component The component to add 'css(...)' to
+
+  @return          The component with 'css(...)' added
  */
 module.exports = (Compoent) => {
   return React.createClass({
@@ -20,17 +20,11 @@ module.exports = (Compoent) => {
     },
 
     css(classes, declaredClasses) {
-      // Create inline function with dummy Component (that can return classes from a method)
-      const currInline = inline.bind({
-        props: this.props,
-        context: this.context,
-        classes() {
-          return classes
-        }
-      })
+      if(!classes) {
+        console.warn(`In \`${ Compoent.displayName }\`, this.props.css must be passed classes`)
+      }
 
-      // Get styles
-      return currInline(declaredClasses)
+      return inline(classes? classes: {}, this.props, this.context, declaredClasses)
     },
 
     render() {
