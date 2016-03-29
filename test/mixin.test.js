@@ -1,0 +1,85 @@
+'use strict'
+
+const React = require('react')
+const TestUtils = require('react-addons-test-utils')
+const expect = require('chai').expect
+require('testdom')('<html><body></body></html>')
+
+const mixin = require('../src/mixin');
+
+describe('mixin', function () {
+
+  it('should return simple css', function () {
+
+    const SomeComponent = React.createClass({
+
+      mixins: [ mixin ],
+
+      styles() {
+        return this.css()
+      },
+
+      classes() {
+        return {
+          'default': {
+            body: {
+              background: '#fafafa',
+            },
+          },
+        }
+      },
+
+      render() {
+        return React.createElement('div')
+      }
+    })
+
+    var someComponent = TestUtils.renderIntoDocument(React.createElement(SomeComponent, {}, 'baz'))
+
+    expect(someComponent.styles()).to.eql({
+      body: {
+        background: '#fafafa',
+      },
+    })
+  })
+
+  it('should return complex css', function () {
+
+    const SomeComponent = React.createClass({
+
+      mixins: [ mixin ],
+
+      styles() {
+        return this.css()
+      },
+
+      classes() {
+        return {
+          'default': {
+            title: {
+              color: this.props.color,
+            },
+            card: {
+              boxShadow: '0 0 2px rgba(0,0,0,.1)',
+            },
+          },
+        }
+      },
+
+      render() {
+        return React.createElement('div')
+      }
+    })
+
+    var someComponent = TestUtils.renderIntoDocument(React.createElement(SomeComponent, { color: 'red' }))
+
+    expect(someComponent.styles()).to.eql({
+      card: {
+        boxShadow: '0 0 2px rgba(0,0,0,.1)',
+      },
+      title: {
+        color: 'red',
+      },
+    })
+  })
+})
