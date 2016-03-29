@@ -20,14 +20,12 @@ describe('React Inline', () => {
   // })
 
   it('return a css object from a set of true class names', function () {
-    this.classes = () => {
-      return {
-        'base': {
-          card: {
-            position: 'absolute',
-          },
+    const classes = {
+      'base': {
+        card: {
+          position: 'absolute',
         },
-      }
+      },
     }
 
     const before = {
@@ -40,28 +38,26 @@ describe('React Inline', () => {
       },
     }
 
-    expect(inline.call(this, before)).to.eql(after)
+    expect(inline(classes, {}, null, before)).to.eql(after)
   })
 
   it('return a css object from a bunch of class names', function () {
-    this.classes = () => {
-      return {
-        'base': {
-          card: {
-            position: 'absolute',
-          },
+    const classes = {
+      'base': {
+        card: {
+          position: 'absolute',
         },
-        'outlined': {
-          card: {
-            border: '2px solid #aeee00',
-          },
+      },
+      'outlined': {
+        card: {
+          border: '2px solid #aeee00',
         },
-        'disabled': {
-          card: {
-            display: 'none',
-          },
+      },
+      'disabled': {
+        card: {
+          display: 'none',
         },
-      }
+      },
     }
 
     const before = {
@@ -76,18 +72,16 @@ describe('React Inline', () => {
       },
     }
 
-    expect(inline.call(this, before)).to.eql(after)
+    expect(inline(classes, {}, null, before)).to.eql(after)
   })
 
   it('include the `default` class', function () {
-    this.classes = () => {
-      return {
-        'default': {
-          card: {
-            position: 'absolute',
-          },
+    const classes = {
+      'default': {
+        card: {
+          position: 'absolute',
         },
-      }
+      },
     }
 
     const after = {
@@ -96,33 +90,31 @@ describe('React Inline', () => {
       },
     }
 
-    expect(inline.call(this)).to.eql(after)
+    expect(inline(classes)).to.eql(after)
   })
 
   it('include any true props that match class names', function () {
-    this.props = {
+    const props = {
       isSelected: true,
       dark: true,
     }
-    this.classes = () => {
-      return {
-        'default': {
-          card: {
-            position: 'absolute',
-          },
+    const classes = {
+      'default': {
+        card: {
+          position: 'absolute',
         },
-        'isSelected': {
-          card: {
-            color: '#aeee00',
-            border: '2px solid #aeee00',
-          },
+      },
+      'isSelected': {
+        card: {
+          color: '#aeee00',
+          border: '2px solid #aeee00',
         },
-        'dark-true': {
-          card: {
-            color: '#333',
-          },
+      },
+      'dark-true': {
+        card: {
+          color: '#333',
         },
-      }
+      },
     }
 
     const after = {
@@ -133,32 +125,30 @@ describe('React Inline', () => {
       },
     }
 
-    expect(inline.call(this, before)).to.eql(after)
+    expect(inline(classes, props, null, before)).to.eql(after)
   })
 
   it('check if props and values match a class', function () {
-    this.props = {
+    const props = {
       isSelected: false,
       zDepth: 2,
     }
-    this.classes = () => {
-      return {
-        'default': {
-          card: {
-            position: 'absolute',
-          },
+    const classes = {
+      'default': {
+        card: {
+          position: 'absolute',
         },
-        'isSelected-false': {
-          card: {
-            background: 'grey',
-          },
+      },
+      'isSelected-false': {
+        card: {
+          background: 'grey',
         },
-        'zDepth-2': {
-          card: {
-            border: '2px solid #333',
-          },
+      },
+      'zDepth-2': {
+        card: {
+          border: '2px solid #333',
         },
-      }
+      },
     }
 
     const after = {
@@ -169,6 +159,6 @@ describe('React Inline', () => {
       },
     }
 
-    expect(inline.call(this, before)).to.eql(after)
+    expect(inline(classes, props, null, before)).to.eql(after)
   })
 })
