@@ -8,28 +8,26 @@ describe('Plugins', () => {
   describe('React Bounds', () => {
 
     it('Activates class names if active bound name matches', function () {
-      this.props = {
+      const props = {
         activeBounds: ['some-bound', 'really-large'],
       }
 
-      this.classes = () => {
-        return {
-          'default': {
-            wrap: {
-              position: 'relative',
-            },
+      const classes = {
+        'default': {
+          wrap: {
+            position: 'relative',
           },
-          'some-bound': {
-            wrap: {
-              color: '#333',
-            },
+        },
+        'some-bound': {
+          wrap: {
+            color: '#333',
           },
-          'really-large': {
-            wrap: {
-              fontSize: '24px',
-            },
+        },
+        'really-large': {
+          wrap: {
+            fontSize: '24px',
           },
-        }
+        },
       }
 
       const after = {
@@ -40,7 +38,7 @@ describe('Plugins', () => {
         },
       }
 
-      expect(inline.call(this)).to.eql(after)
+      expect(inline(classes, props)).to.eql(after)
     })
   })
 })
