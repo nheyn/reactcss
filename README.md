@@ -13,13 +13,29 @@
 npm install reactcss --save
 ```
 
-### Extend ReactCSS
+### Extend ReactCSS or Use Higher Order Component
+
+#### Extend ReactCSS
 ```javascript
 var ReactCSS = require('reactcss');
 
 class Button extends ReactCSS.Component {
   ...
 }
+```
+
+#### Use Higher Order Component
+```javascript
+var ReactCSS = require('reactcss');
+
+class Button extends React.Component {
+  styles() {
+    return this.props.css(this.classes())
+  }
+
+  ...
+}
+const StyledButton = ReactCss.useStyles(Button)
 ```
 
 ### Put in a Default Class
