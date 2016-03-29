@@ -14,7 +14,7 @@ describe('useStyles', function () {
     class SomeComponent extends React.Component {
 
       styles() {
-        return this.props.css(this.classes());
+        return this.props.css(this.classes())
       }
 
       classes() {
@@ -48,7 +48,7 @@ describe('useStyles', function () {
     class SomeComponent extends React.Component {
 
       styles() {
-        return this.props.css(this.classes());
+        return this.props.css(this.classes())
       }
 
       classes() {
