@@ -11,9 +11,9 @@ const inline = require('./inline')
 
   @return          The component with 'css(...)' added
  */
-module.exports = (Compoent) => {
+module.exports = (Component) => {
   return React.createClass({
-    displayName: `UseStyles_${Compoent.displayName}`,
+    displayName: `UseStyles_${Component.displayName}`,
 
     contextTypes: {
       mixins: React.PropTypes.object
@@ -21,18 +21,18 @@ module.exports = (Compoent) => {
 
     css(classes, declaredClasses) {
       if(!classes) {
-        console.warn(`In \`${ Compoent.displayName }\`, this.props.css must be passed classes`)
+        console.warn(`In \`${ Component.displayName }\`, this.props.css must be passed classes`)
       };
 
       return inline(classes, this.props, this.context.mixins, declaredClasses)
     },
 
     render() {
-      //return <Compoent {...this.props} css={this.css} />
+      //return <Component {...this.props} css={this.css} />
       // Not using ^ so babel-react doesn't need to be added
 
       return React.createElement(
-        Compoent,
+        Component,
         Object.assign({}, this.props, { css: this.css })
       )
     }
